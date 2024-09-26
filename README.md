@@ -8,17 +8,17 @@ KUBEN VGS 2IMI Johnny: installasjonsinstrukser for telefonkatalogen
 
 ## Installasjon av SD kort.
 Start med å laste ned en Raspberry Pi imager (https://downloads.raspberrypi.org/imager/imager_latest.exe). Plugg inn SD kortet ditt inn i datamaskinen din.
-Her velger du hvilken modell av raspberry pi du har, hvilket operativt system du vil bruke (i dette tilfelle ubuntu) og så velger du fil plaseringen til SD kortet ditt. (se Referanse_Bilde_1.png for extra detalje)
+Her velger du hvilken modell av raspberry pi du har, hvilket operativt system du vil bruke (i dette tilfelle ubuntu) og så velger du fil plaseringen til SD kortet ditt. 
 Når denne installasjonen er ferdig, plugger du SD kortet ditt in i raspberry pien din og starter å kjøre den.
 
 ## Ubuntu setup
-Start med å velge valgfritt språk til Ubuntu maskinen. (se Referanse_Bilde_2.png for extra detalje)
+Start med å velge valgfritt språk til Ubuntu maskinen. 
 
-Deretter velg et valgfri Keyboard layout. (se Referanse_Bilde_3.png for extra detalje)
+Deretter velg et valgfri Keyboard layout. 
 
-Også velger du en valgfri tidssone. (se Referanse_Bilde_4.png for extra detalje)
+Også velger du en valgfri tidssone.
 
-Deretter skriver du in navnet ditt, velger et valgfritt brukernavn og velger et valgfritt passord. (se Referanse_Bilde_5.png for extra detalje)
+Deretter skriver du in navnet ditt, velger et valgfritt brukernavn og velger et valgfritt passord. 
 
 ## MariaDB Installasjon og setup
 Vi begynner med å oppdatere og opgradere systemet i tilfelle det er noen filer datamaskinen mangler:
