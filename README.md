@@ -34,7 +34,8 @@ sudo nmcli connection show --active
 ```
 
 ## MariaDB Installasjon og setup
-Vi begynner med å oppdatere og opgradere systemet i tilfelle det er noen filer datamaskinen mangler:
+Åpne terminalen ved å trykke tastene ```CTRL + Alt + T``` samtidig.
+Vi begynner med å oppdatere og opgradere systemet i tilfelle det er noen filer datamaskinen mangler. Skriv in følgene kommandoer:
 ```system
 sudo apt update
 ```
