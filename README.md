@@ -20,6 +20,19 @@ Også velger du en valgfri tidssone.
 
 Deretter skriver du in navnet ditt, velger et valgfritt brukernavn og velger et valgfritt passord. 
 
+## Koble deg på nett
+
+Bruk enten en ethernet-kabel som du kobler til din Raspberry Pi, eller koble til Wi-Fi ved å følge disse instruksjonene:
+Trykk tastene ```CTRL + Alt + T``` samtidig for å åpne terminalen.
+Skriv deretter inn følgende kommando i terminalen:
+```system
+sudo nmcli dev wifi connect "Min_Wifi" password "password"
+```
+Deretter kan du dobbelsjekke om ethernet- eller Wi-Fi-tilkoblingen fungerer ved å bruke kommandoen:
+```system
+sudo nmcli connection show --active
+```
+
 ## MariaDB Installasjon og setup
 Vi begynner med å oppdatere og opgradere systemet i tilfelle det er noen filer datamaskinen mangler:
 ```system
