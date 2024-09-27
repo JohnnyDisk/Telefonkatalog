@@ -228,8 +228,10 @@ conn = mysql.connector.connect(
     database="telefonkatalog"
 )
 ```
-
-
+Åpne python filen for å forsikre at det funker (pass på at du er i ~/Desktop/Telefonkatalog når du skal kjøre programmet):
+```system
+python3 telefonkatalog.py
+```
 
 
 
