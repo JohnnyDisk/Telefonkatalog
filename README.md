@@ -150,7 +150,7 @@ SSH brukernavn@din_ip
 ```
 din_ip er de rekken med nummere du fikk av å kjøre kommandoen ```hostname -I | awk '{print $1}'```.
 
-det skal være en rekke med tall bindet sammen med 3 punktum. For eksempel: 10.2.3.208.
+det skal være en rekke med tall bindet sammen med 3 punktum. For eksempel: 10.2.3.208
 
 ## MariaDB SQL database setup
 
