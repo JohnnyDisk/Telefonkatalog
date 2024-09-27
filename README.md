@@ -148,3 +148,41 @@ deretter skriver du in dette på den eksterne PCen:
 ```system
 SSH brukernavn@din_ip
 ```
+
+## MariaDB SQL database setup
+
+Åpne terminalen ved å trykke tastene ```CTRL + Alt + T``` samtidig.
+
+start opp MariaDB:
+```system
+sudo mariadb -u root -p
+```
+Vi starter med å opprette en ny database som skal lagre telefonkatalogen:
+```system
+CREATE DATABASE telefonkatalog;
+```
+Også går vi inn i denne databasen:
+```system
+USE telefonkatalog;
+```
+Opprett tabellen for telefonkatalogen:
+```system
+CREATE TABLE kontakter (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fornavn VARCHAR(100),
+    etternavn VARCHAR(100),
+    telefonnummer VARCHAR(15)
+);
+```
+Legg til noen kontakter med fornavn, etternavn, og telefonnummer:
+```system
+INSERT INTO kontakter (fornavn, etternavn, telefonnummer) 
+VALUES ('Ola', 'Nordmann', '12345678'),
+       ('Kari', 'Nordmann', '87654321');
+```
+Kontroller at kontaktene ble lagt til riktig:
+```system
+SELECT * FROM kontakter;
+```
+
+
