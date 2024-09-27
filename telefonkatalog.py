@@ -11,9 +11,9 @@ cursor = conn.cursor()
 
 def printMeny():
     print()
-    print("┌-------------Telefonkatalog--------------┐")
-    print("| [1.] Legg til ny kontakt                |\n| [2.] Søk opp kontakt eller telefonnummer |\n| [3.] Vis alle kontakter                 |\n| [4.] Endre informasjon                  |\n| [5.] Slett kontakt og telefonnummer     |\n| [6.] Avslutt                            |")
-    print("└-----------------------------------------┘")
+    print("┌-------------Telefonkatalog---------------┐")
+    print("| [1.] Legg til ny kontakt                 |\n| [2.] Søk opp kontakt eller telefonnummer  |\n| [3.] Vis alle kontakter                  |\n| [4.] Endre informasjon                   |\n| [5.] Slett kontakt og telefonnummer      |\n| [6.] Avslutt                             |")
+    print("└------------------------------------------┘")
     menyvalg = input("Skriv inn tall for å velge fra menyen (1-6): ")
     utfoerMenyvalg(menyvalg)
 
