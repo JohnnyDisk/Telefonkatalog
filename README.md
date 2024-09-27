@@ -140,7 +140,7 @@ sudo apt install git
 
 ## Hvordan koble til SSH serveren fra en ekstern PC
 
-start med å kjøre denne kommandoen på Ubuntu serveren:
+start med å kjøre denne kommandoen på Ubuntu serveren for å få ip-en din:
 ```system
 hostname -I | awk '{print $1}'
 ```
@@ -148,6 +148,9 @@ deretter skriver du in dette på den eksterne PCen:
 ```system
 SSH brukernavn@din_ip
 ```
+din_ip er de rekken med nummere du fikk av å kjøre kommandoen ```hostname -I | awk '{print $1}'```.
+
+det skal være en rekke med tall bindet sammen med 3 punktum. For eksempel: 10.2.3.208.
 
 ## MariaDB SQL database setup
 
