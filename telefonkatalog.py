@@ -1,28 +1,37 @@
-telefonkatalog = []
+import mysql.connector
+
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="brukernavn",  # Skriv in ditt brukernavn her
+    password="passord",  # Skriv in ditt passsord her
+    database="telefonkatalog"
+)
+cursor = conn.cursor()
 
 def printMeny():
     print()
     print("┌-------------Telefonkatalog--------------┐")
-    print("| [1.] Legg til ny person                 |\n| [2.] Søk opp person eller telefonnummer |\n| [3.] Vis alle personer                  |\n| [4.] Endre informasjon                  |\n| [5.] Slett person og telefonnummer      |\n| [6.] Avslutt                            |")
+    print("| [1.] Legg til ny kontakt                |\n| [2.] Søk opp kontakt eller telefonnummer |\n| [3.] Vis alle kontakter                 |\n| [4.] Endre informasjon                  |\n| [5.] Slett kontakt og telefonnummer     |\n| [6.] Avslutt                            |")
     print("└-----------------------------------------┘")
     menyvalg = input("Skriv inn tall for å velge fra menyen (1-6): ")
     utfoerMenyvalg(menyvalg)
 
 def utfoerMenyvalg(valgtTall):
     if valgtTall == "1":
-        registrerPerson()
+        registrerKontakt()
     elif valgtTall == "2":
-        sokPerson()
+        sokKontakt()
         printMeny()
     elif valgtTall == "3":
-        visAllePersoner()
+        visAlleKontakter()
     elif valgtTall == "4":
-        endrePerson()
+        endreKontakt()
     elif valgtTall == "5":
-        slettPerson()
+        slettKontakt()
     elif valgtTall == "6":
         bekreftelse = input("Er du sikker på at du vil avslutte? J/N ")
-        if bekreftelse.lower() in ["j", "ja"]:  # Sjekker bare for ja
+        if bekreftelse.lower() in ["j", "ja"]:
             exit()
         else:
             printMeny()
@@ -30,7 +39,7 @@ def utfoerMenyvalg(valgtTall):
         nyttForsok = input("Ugyldig valg. Velg et tall mellom 1-6: ")
         utfoerMenyvalg(nyttForsok)
 
-def registrerPerson():
+def registrerKontakt():
     fornavn = input("Skriv inn fornavn: ")
     etternavn = input("Skriv inn etternavn: ")
     while True:
@@ -40,191 +49,88 @@ def registrerPerson():
         else:
             print("[!] Telefonnummeret kan kun inneholde tall. Prøv igjen.")
 
-    nyRegistrering = [fornavn, etternavn, telefonnummer]
-    telefonkatalog.append(nyRegistrering)
+    cursor.execute("INSERT INTO kontakter (fornavn, etternavn, telefonnummer) VALUES (%s, %s, %s)", (fornavn, etternavn, telefonnummer))
+    conn.commit()
 
-    print("")
     print("{0} {1} er registrert med telefonnummer: {2}".format(fornavn, etternavn, telefonnummer))
     input("Trykk enter for å gå tilbake til menyen...")
     printMeny()
 
-def visAllePersoner():
-    if not telefonkatalog:
-        print("")
-        print("[!] Det er ingen registrerte personer i katalogen [!]")
-        input("Trykk enter for å gå tilbake til menyen...")
-        printMeny()
+def visAlleKontakter():
+    cursor.execute("SELECT fornavn, etternavn, telefonnummer FROM kontakter")
+    result = cursor.fetchall()
+
+    if not result:
+        print("[!] Det er ingen registrerte kontakter i katalogen [!]")
     else:
-        for personer in telefonkatalog:
-            info = "Fornavn: {:15s} Etternavn: {:15s} Telefonnummer: {:8s}".format(personer[0], personer[1], personer[2])
+        for kontakt in result:
+            info = "Fornavn: {:15s} Etternavn: {:15s} Telefonnummer: {:8s}".format(kontakt[0], kontakt[1], kontakt[2])
             print_dashed_line(info)
             print(info)
             print_dashed_line(info)
-        input("\nTrykk enter for å gå tilbake til menyen...")
-        printMeny()
-
-def sokPerson():
-    if not telefonkatalog:
-        print("")
-        print("[!] Det er ingen registrerte personer i katalogen [!]")
-        printMeny()
-    else:
-        print("")
-        print("1. Søk på fornavn")
-        print("2. Søk på etternavn")
-        print("3. Søk på telefonnummer")
-        print("4. Tilbake til hovedmeny")
-        sokefelt = input("Velg ønsket søk 1-3, eller 4 for å gå tilbake: ")
-        if sokefelt == "1":
-            navn = input("Fornavn: ")
-            finnPerson("fornavn", navn)
-        elif sokefelt == "2":
-            navn = input("Etternavn: ")
-            finnPerson("etternavn", navn)
-        elif sokefelt == "3":
-            nummer = input("Telefonnummer: ")
-            finnPerson("telefonnummer", nummer)
-        elif sokefelt == "4":
-            printMeny()
-        else:
-            print("")
-            print("[!] Ugyldig valg. [!] \n Velg et tall mellom 1-4: ")
-            sokPerson()
-
-def finnPerson(typeSok, sokeTekst):
-    svar = []
-    sokeTekst = sokeTekst.lower()
-    for personer in telefonkatalog:
-        if typeSok == "fornavn" and personer[0].lower() == sokeTekst:
-            svar.append(personer)
-        elif typeSok == "etternavn" and personer[1].lower() == sokeTekst:
-            svar.append(personer)
-        elif typeSok == "telefonnummer" and personer[2] == sokeTekst:
-            svar.append(personer)
-
-    if not svar:
-        print("finner ingen personer")
-    else:
-        for personer in svar:
-            info = "{0} {1} har telefonnummer {2}".format(personer[0], personer[1], personer[2])
-            print_dashed_line(info)
-            print(info)
-            print_dashed_line(info)
-
-def slettPerson():
-    if not telefonkatalog:
-        print("")
-        print("[!] Det er ingen registrerte personer i katalogen [!]")
-        printMeny()
-    else:
-        print("")
-        print("1. Søk på fornavn")
-        print("2. Søk på etternavn")
-        print("3. Søk på telefonnummer")
-        print("4. Tilbake til hovedmeny")
-        sokefelt = input("Velg ønsket søk 1-3, eller 4 for å gå tilbake: ")
-        if sokefelt == "1":
-            navn = input("Fornavn: ")
-            finnOgSlettPerson("fornavn", navn)
-        elif sokefelt == "2":
-            navn = input("Etternavn: ")
-            finnOgSlettPerson("etternavn", navn)
-        elif sokefelt == "3":
-            nummer = input("Telefonnummer: ")
-            finnOgSlettPerson("telefonnummer", nummer)
-        elif sokefelt == "4":
-            printMeny()
-        else:
-            print("")
-            print("[!] Ugyldig valg. [!] \n Velg et tall mellom 1-4: ")
-            slettPerson()
-
-def finnOgSlettPerson(typeSok, sokeTekst):
-    sokeTekst = sokeTekst.lower()
-    for idx, personer in enumerate(telefonkatalog):
-        if (typeSok == "fornavn" and personer[0].lower() == sokeTekst) or \
-           (typeSok == "etternavn" and personer[1].lower() == sokeTekst) or \
-           (typeSok == "telefonnummer" and personer[2] == sokeTekst):
-            print("")
-            info = "Følgende person vil bli slettet: {0} {1} telefonnummer: {2}".format(personer[0], personer[1], personer[2]) 
-            print_dashed_line(info)
-            print(info)
-            print_dashed_line(info)
-            bekreftelse = input("Er du sikker på at du vil slette? J/N ")
-            if bekreftelse.lower() in ["j", "ja"]:
-                del telefonkatalog[idx]
-                print("[!] Personen er slettet fra telefonkatalogen. [!]")
-            else:
-                print("[!] Sletting avbrutt. [!]")
-            break
-    else:
-        print("[!] Ingen treff for søk med " + sokeTekst + ". [!]")
+    input("\nTrykk enter for å gå tilbake til menyen...")
     printMeny()
 
-def endrePerson():
-    if not telefonkatalog:
-        print("")
-        print("[!] Det er ingen registrerte personer i katalogen [!]")
-        print("")
-        printMeny()
-    else:
-        print("")
-        print("1. Søk på fornavn")
-        print("2. Søk på etternavn")
-        print("3. Søk på telefonnummer")
-        print("4. Tilbake til hovedmeny")
-        sokefelt = input("Velg ønsket søk 1-3, eller 4 for å gå tilbake: ")
-        if sokefelt == "1":
-            navn = input("Fornavn: ")
-            finnOgEndrePerson("fornavn", navn)
-        elif sokefelt == "2":
-            navn = input("Etternavn: ")
-            finnOgEndrePerson("etternavn", navn)
-        elif sokefelt == "3":
-            nummer = input("Telefonnummer: ")
-            finnOgEndrePerson("telefonnummer", nummer)
-        elif sokefelt == "4":
-            printMeny()
-        else:
-            print("")
-            print("[!] Ugyldig valg. [!] \n Velg et tall mellom 1-4: ")
-            endrePerson()
+def sokKontakt():
+    print("1. Søk på fornavn")
+    print("2. Søk på etternavn")
+    print("3. Søk på telefonnummer")
+    sokefelt = input("Velg ønsket søk 1-3: ")
 
-def finnOgEndrePerson(typeSok, sokeTekst):
-    sokeTekst = sokeTekst.lower()
-    for idx, personer in enumerate(telefonkatalog):
-        if (typeSok == "fornavn" and personer[0].lower() == sokeTekst) or \
-           (typeSok == "etternavn" and personer[1].lower() == sokeTekst) or \
-           (typeSok == "telefonnummer" and personer[2] == sokeTekst):
-            info = "Endrer informasjon for: {0} {1}, telefonnummer {2}".format(personer[0], personer[1], personer[2])
+    if sokefelt == "1":
+        navn = input("Fornavn: ")
+        cursor.execute("SELECT fornavn, etternavn, telefonnummer FROM kontakter WHERE fornavn = %s", (navn,))
+    elif sokefelt == "2":
+        navn = input("Etternavn: ")
+        cursor.execute("SELECT fornavn, etternavn, telefonnummer FROM kontakter WHERE etternavn = %s", (navn,))
+    elif sokefelt == "3":
+        nummer = input("Telefonnummer: ")
+        cursor.execute("SELECT fornavn, etternavn, telefonnummer FROM kontakter WHERE telefonnummer = %s", (nummer,))
+    else:
+        printMeny()
+        return
+
+    result = cursor.fetchall()
+    if not result:
+        print("Finner ingen kontakter")
+    else:
+        for kontakt in result:
+            info = "{0} {1} har telefonnummer {2}".format(kontakt[0], kontakt[1], kontakt[2])
             print_dashed_line(info)
             print(info)
             print_dashed_line(info)
 
-            nyttFornavn = input(f"Nytt fornavn (trykk Enter for å beholde '{personer[0]}'): ")
-            nyttEtternavn = input(f"Nytt etternavn (trykk Enter for å beholde '{personer[1]}'): ")
-            nyttTelefonnummer = input(f"Nytt telefonnummer (trykk Enter for å beholde '{personer[2]}'): ")
+def slettKontakt():
+    telefonnummer = input("Skriv inn telefonnummeret til kontakten du vil slette: ")
+    cursor.execute("DELETE FROM kontakter WHERE telefonnummer = %s", (telefonnummer,))
+    conn.commit()
 
-            if nyttFornavn:
-                personer[0] = nyttFornavn
-            if nyttEtternavn:
-                personer[1] = nyttEtternavn
-            if nyttTelefonnummer:
-                personer[2] = nyttTelefonnummer
-
-            oppdatert_info = "Oppdatert informasjon: {0} {1}, telefonnummer {2}".format(personer[0], personer[1], personer[2])
-            print_dashed_line(oppdatert_info)
-            print(oppdatert_info)
-            print_dashed_line(oppdatert_info)
-            break
+    if cursor.rowcount > 0:
+        print("[!] Kontakten er slettet fra telefonkatalogen. [!]")
     else:
-        print("[!] Ingen treff for søk med " + sokeTekst + ". [!]")
-    print("")
+        print("[!] Ingen kontakt funnet med telefonnummer {0}. [!]".format(telefonnummer))
+
+    printMeny()
+
+def endreKontakt():
+    telefonnummer = input("Skriv inn telefonnummeret til kontakten du vil endre: ")
+    cursor.execute("SELECT * FROM kontakter WHERE telefonnummer = %s", (telefonnummer,))
+    kontakt = cursor.fetchone()
+
+    if kontakt:
+        nyttFornavn = input(f"Nytt fornavn (trykk Enter for å beholde '{kontakt[1]}'): ") or kontakt[1]
+        nyttEtternavn = input(f"Nytt etternavn (trykk Enter for å beholde '{kontakt[2]}'): ") or kontakt[2]
+        nyttTelefonnummer = input(f"Nytt telefonnummer (trykk Enter for å beholde '{kontakt[3]}'): ") or kontakt[3]
+
+        cursor.execute("UPDATE kontakter SET fornavn = %s, etternavn = %s, telefonnummer = %s WHERE telefonnummer = %s",
+                       (nyttFornavn, nyttEtternavn, nyttTelefonnummer, telefonnummer))
+        conn.commit()
+        print("[!] Kontaktinformasjon oppdatert. [!]")
+    else:
+        print("[!] Ingen kontakt funnet med telefonnummer {0}. [!]".format(telefonnummer))
     printMeny()
 
 def print_dashed_line(text):
-    """Helper function to print a dashed line based on the length of the text."""
-    length = len(text)
-    print("-" * length)
+    print("-" * len(text))
 
-printMeny()  # Starter programmet ved å skrive menyen første gang
+printMeny()
