@@ -184,5 +184,9 @@ Kontroller at kontaktene ble lagt til riktig:
 ```system
 SELECT * FROM kontakter;
 ```
+Gå ut av mariadb:
+```system
+EXIT;
+```
 
 
