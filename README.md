@@ -153,7 +153,7 @@ SSH brukernavn@din_ip
 
 Åpne terminalen ved å trykke tastene ```CTRL + Alt + T``` samtidig.
 
-start opp MariaDB:
+Start opp MariaDB:
 ```system
 sudo mariadb -u root -p
 ```
@@ -161,7 +161,7 @@ Vi starter med å opprette en ny database som skal lagre telefonkatalogen:
 ```system
 CREATE DATABASE telefonkatalog;
 ```
-Også går vi inn i denne databasen:
+Gå inn i denne databasen:
 ```system
 USE telefonkatalog;
 ```
@@ -174,7 +174,7 @@ CREATE TABLE kontakter (
     telefonnummer VARCHAR(15)
 );
 ```
-Legg til noen kontakter med fornavn, etternavn, og telefonnummer:
+Legg til noen kontakter med fornavn, etternavn og telefonnummer:
 ```system
 INSERT INTO kontakter (fornavn, etternavn, telefonnummer) 
 VALUES ('Ola', 'Nordmann', '12345678'),
@@ -188,5 +188,46 @@ Gå ut av mariadb:
 ```system
 EXIT;
 ```
+
+## Nedlastning og oppsett av telefonkatalog python filen
+
+Åpne terminalen ved å trykke tastene ```CTRL + Alt + T``` samtidig.
+
+I dette eksemplet laster vi ned Python-filen på skrivebordet:
+```system
+cd ~/Desktop
+```
+Last ned selve filen:
+```system
+git clone https://github.com/JohnnyDisk/Telefonkatalog.git
+```
+Naviger til telefonkatalog-mappen:
+```system
+cd Telefonkatalog
+```
+Last ned Python-pakkene:
+```system
+sudo apt install python3-mysql.connector
+```
+Deretter må vi redigere filen slik at riktig innloggingsinformasjon er satt:
+```system
+nano telefonkatalog.py
+```
+Endre ```brukernavn``` og ```passord``` til ditt brukernavn og passord på MariaDB:
+```system
+import mysql.connector
+
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="brukernavn",  # Skriv in ditt brukernavn her
+    password="passord",  # Skriv in ditt passsord her
+    database="telefonkatalog"
+)
+```
+
+
+
+
 
 
